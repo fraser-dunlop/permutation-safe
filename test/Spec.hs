@@ -92,7 +92,7 @@ main = hspec $ do
                    _ -> False
             else True)
 
-    it "multitest: transitivity" $
+    it "multitest: check conversions" $
       property $ \d (xs :: [Int]) ->
         if length xs > 0
            then let min' = minimum xs
@@ -112,7 +112,7 @@ main = hspec $ do
                         _ -> False
             else True
 
-    it "multitest: transitivity" $
+    it "multitest: check conversions" $
       property $ \d (xs :: [Int]) ->
         if length xs > 0
            then let min' = minimum xs
@@ -130,6 +130,34 @@ main = hspec $ do
                         Right perms -> (length (nub perms)) == 1
                         _ -> False
             else True
+
+    it "composition with inverse is identity" $
+      property $ \d (xs :: [Int]) -> 
+        if length xs > 0
+           then let rel'  = (zip (nub xs) (drop d (cycle (nub xs))))
+                in case fromRelation rel' of
+                     Right perm -> perm <> inverse perm == mempty
+                     Left _ -> False
+           else True
+                      
+    it "transitivity" $
+      property $ \d (xs :: [Int]) e (ys :: [Int]) f (zs :: [Int]) -> 
+        if length xs > 0 && length ys > 0 && length zs > 0
+           then let relx  = (zip (nub xs) (drop d (cycle (nub xs))))
+                    rely  = (zip (nub ys) (drop e (cycle (nub ys))))
+                    relz  = (zip (nub zs) (drop f (cycle (nub zs))))
+                in case (do
+                      px <- fromRelation relx
+                      py <- fromRelation rely
+                      pz <- fromRelation relz
+                      return (((px <> py) <> pz) == (px <> (py <> pz)))
+                        ) of
+                     Right b -> b
+                     _ -> False
+           else True
+
+
+
 
 relationConstructionError :: Either PermutationError (Permutation a)
 relationConstructionError = Left $ PermutationError
