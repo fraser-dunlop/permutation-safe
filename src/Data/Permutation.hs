@@ -17,9 +17,11 @@ module Data.Permutation
   , toCyclesCanonical
   , toRelation
   , toTwoLineForm
+  , permutedPoints
   -- * Permutation Utilities
   , inverse
   , size
+  , (^^^)
   ) where
 import Data.Permutation.Internal
 

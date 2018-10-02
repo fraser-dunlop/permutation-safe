@@ -156,8 +156,14 @@ main = hspec $ do
                      _ -> False
            else True
 
-
-
+    it "power of number of permuted points is identity" $
+      property $ \d (xs :: [Int]) -> 
+        if length xs > 0
+           then let rel'  = (zip (nub xs) (drop d (cycle (nub xs))))
+                in case fromRelation rel' of
+                     Right perm -> perm^^^(length $ permutedPoints perm) == mempty
+                     Left _ -> False
+           else True
 
 relationConstructionError :: Either PermutationError (Permutation a)
 relationConstructionError = Left $ PermutationError

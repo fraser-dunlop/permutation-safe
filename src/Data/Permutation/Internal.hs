@@ -129,6 +129,17 @@ toTwoLineForm from to p =
               "Data.Permutation.toTwoLineForm: the range used does not cover the permuted elements"
     Right rf -> Right $ unzip rf
 
+-- | Gets the list of points that are acted on by the permutation.
+permutedPoints :: Permutation a -> [a]
+permutedPoints (Permutation p) = fst <$> p
+
+
+-- | Power of a permutation.
+(^^^) :: (Eq a) => Permutation a -> Int -> Permutation a
+(^^^) _ 0 = Permutation []
+(^^^) p 1 = p
+(^^^) p n = p <> (p^^^(n-1))
+
 -- | Gets the size of the permutation. The number of elements not mapped to themselves.
 size :: Permutation a -> Int
 size (Permutation p) = length p
