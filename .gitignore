@@ -1,4 +1,6 @@
 .stack-work/
 permutation-safe.cabal
 dist/*
+.DS_Store
+.gitignore
 *~
