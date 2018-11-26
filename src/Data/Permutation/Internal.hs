@@ -2,6 +2,7 @@
 module Data.Permutation.Internal where
 import Data.List (nub, (\\), sortBy)
 import Control.Monad.State
+import Data.Semigroup
 
 --------------------------Safe Permutation Type----------------------------------------
 
