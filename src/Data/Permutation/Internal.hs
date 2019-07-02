@@ -205,8 +205,10 @@ returnCycles = do
 -- | Start finding a new cycle.
 startNewCycle :: CycleFinder a ()
 startNewCycle = do
-  (_,c,(a,b):m) <- get
-  put ([a,b],c,m)
+  got <- get
+  case got of
+    (_,c,(a,b):m) -> put ([a,b],c,m)
+    _ -> error "Data.Permutation.Internal.startNewCycle: this should never happen"
 
 -- | Adds the next element of the cycle.
 nextCycleElem :: (Eq a) => CycleFinder a ()
